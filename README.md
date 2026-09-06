@@ -13,7 +13,7 @@ The `app/` directory is a static browser app. It requires no account, API key, s
 5. Press **Score & save**. The result tells you why it qualified and what to do next.
 6. Use **Export accounts** at the end of the day as your backup/import file.
 
-For a cloud URL, push this folder to a private repository, set **Settings → Pages → Source** to **GitHub Actions**, and use the included deployment workflow. GitHub Pages on GitHub Free is available only from public repositories; private-repository Pages requires an eligible paid GitHub plan. Open the deployed `/app/` path. The static UI contains no secrets and saved records remain in the user's browser, but do not use a public site on a shared device or for client-sensitive notes.
+For a cloud URL, enable **Settings → Pages → Source → GitHub Actions** first, then manually run **Deploy ICP MVP** from the Actions tab. The deployment workflow is intentionally manual so a repository with Pages disabled does not fail on every push. GitHub Pages on GitHub Free is available only from public repositories; private-repository Pages requires an eligible paid GitHub plan. Open the deployed `/app/` path. The static UI contains no secrets and saved records remain in the user's browser, but do not use a public site on a shared device or for client-sensitive notes.
 
 ## Quality boundary
 

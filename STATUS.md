@@ -18,6 +18,7 @@
 - Microsoft 365 is the selected email/calendar layer. The approved Outlook Calendar connection was verified read-only; mailbox messages were not inspected.
 - Four curated, internal-only ERP23 Odoo knowledge summaries are seeded and verified in private Notion. They retain an external-release approval warning; no vault files were uploaded.
 - Outlook meeting-prep context is now minimized before agent use; raw event bodies, meeting credentials, IDs, and identities are excluded by design.
+- Pages deployment no longer runs on every push while Pages is disabled; it is a manual workflow using Node 24 and configure-pages v6.
 
 ## NEXT
 - Export one qualified public-research account and run the server-side sync adapter from a trusted environment.
