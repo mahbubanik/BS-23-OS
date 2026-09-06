@@ -42,7 +42,11 @@ export async function createPublicResearchAccount(account, env = process.env, re
     if (!response.ok) throw new Error(`Notion ${method} ${path} failed (${response.status}): ${await response.text()}`);
     return response.json();
   };
-  const accountPage = await api('/pages', 'POST', { parent: { data_source_id: env.NOTION_ACCOUNTS_DATA_SOURCE_ID }, properties: publicAccountProperties(account) });
+  const matches = await api(`/data_sources/${env.NOTION_ACCOUNTS_DATA_SOURCE_ID}/query`, 'POST', { filter: { property: 'Name', title: { equals: account.company } }, page_size: 1 });
+  const existing = matches.results?.[0];
+  const accountPage = existing
+    ? await api(`/pages/${existing.id}`, 'PATCH', { properties: publicAccountProperties(account) })
+    : await api('/pages', 'POST', { parent: { data_source_id: env.NOTION_ACCOUNTS_DATA_SOURCE_ID }, properties: publicAccountProperties(account) });
   const evidenceIds = [];
   for (const item of account.evidence || []) {
     if (!item.claim) continue;
@@ -50,7 +54,7 @@ export async function createPublicResearchAccount(account, env = process.env, re
     evidenceIds.push(evidencePage.id);
   }
   if (evidenceIds.length) await api(`/pages/${accountPage.id}`, 'PATCH', { properties: { Evidence: { relation: evidenceIds.map(id => ({ id })) } } });
-  return { accountPageId: accountPage.id, evidencePageIds: evidenceIds };
+  return { accountPageId: accountPage.id, evidencePageIds: evidenceIds, reusedAccount: Boolean(existing) };
 }
 
 if (process.argv[1] && new URL(`file:${process.argv[1]}`).href === import.meta.url) {

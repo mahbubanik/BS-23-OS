@@ -12,10 +12,13 @@ assert.equal(selectAccount({ accounts: [account] }).company, 'Example Distributi
 assert.equal(selectAccount({ accounts: [account, { ...account, company: 'Second Co' }] }, 'Second Co').company, 'Second Co');
 assert.throws(() => selectAccount({ accounts: [account, { ...account, company: 'Second Co' }] }), /exact company name/);
 const calls = [];
-const fakeFetch = async (url, options) => { calls.push({ url, options }); const id = calls.length === 1 ? 'account-page' : calls.length === 2 ? 'evidence-page' : 'patched-page'; return { ok: true, status: 200, json: async () => ({ id }), text: async () => '' }; };
+const fakeFetch = async (url, options) => { calls.push({ url, options }); const id = calls.length === 2 ? 'account-page' : calls.length === 3 ? 'evidence-page' : 'patched-page'; return { ok: true, status: 200, json: async () => (url.endsWith('/query') ? { results: [] } : { id }), text: async () => '' }; };
 const result = await createPublicResearchAccount(account, { NOTION_TOKEN: 'secret', NOTION_ACCOUNTS_DATA_SOURCE_ID: 'accounts', NOTION_EVIDENCE_DATA_SOURCE_ID: 'evidence' }, fakeFetch);
-assert.deepEqual(result, { accountPageId: 'account-page', evidencePageIds: ['evidence-page'] });
-assert.equal(calls.length, 3, 'create account, create evidence, link evidence');
+assert.deepEqual(result, { accountPageId: 'account-page', evidencePageIds: ['evidence-page'], reusedAccount: false });
+assert.equal(calls.length, 4, 'query account, create account, create evidence, link evidence');
 assert.equal(calls[0].options.headers['Notion-Version'], '2026-03-11');
+const reusedFetch = async (url, options) => ({ ok: true, status: 200, json: async () => (url.endsWith('/query') ? { results: [{ id: 'existing-page' }] } : { id: 'existing-page' }), text: async () => '' });
+const reused = await createPublicResearchAccount(account, { NOTION_TOKEN: 'secret', NOTION_ACCOUNTS_DATA_SOURCE_ID: 'accounts', NOTION_EVIDENCE_DATA_SOURCE_ID: 'evidence' }, reusedFetch);
+assert.equal(reused.reusedAccount, true);
 await assert.rejects(() => createPublicResearchAccount(account, {}, fakeFetch), /NOTION_TOKEN/);
 console.log('Notion account-sync checks passed.');
