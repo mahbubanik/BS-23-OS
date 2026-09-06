@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Mid-Market Wholesale & Cross-Border Distribution",
+    "countries": "Europe, GCC, Mauritius, Bangladesh",
+    "industries": "Wholesale, B2B Distribution, Logistics, FMCG Trading",
+    "employeeRange": "50-500",
+    "businessModels": "B2B wholesale, import/export, multi-warehouse distribution",
+    "pains": "Inventory reconciliation latency, customs/VAT compliance, stock mismatch across channels, manual order handling",
+    "technology": "Sage, Minimax, BaseLinker, spreadsheets, legacy on-premise ERP",
+    "triggers": "Cross-border warehouse expansion, multi-channel Shopify/B2B demand, tax compliance modernization",
+    "version": "1.0.0",
+    "active": true,
+    "proofPrecedents": ["Valid Logistics (Mauritius)", "Oxenham", "Visco Logistics Bangladesh Ltd."]
+  },
+  {
+    "name": "Omnichannel Retail & E-Commerce (SAP / Legacy Migration)",
+    "countries": "Spain, Europe, Bangladesh, UAE",
+    "industries": "Retail, Fashion, Cosmetics, Jewellery, Specialty Stores",
+    "employeeRange": "20-250",
+    "businessModels": "Multi-store physical retail, e-commerce, blended B2B/B2C",
+    "pains": "High licensing/maintenance cost of tier-1 ERPs (SAP), disjointed POS and online stock sync, custom ledger overhead",
+    "technology": "SAP, legacy POS, WooCommerce, Shopify, Excel/Zoho",
+    "triggers": "SAP contract renewal or cost-reduction mandate, new physical store openings, omnichannel expansion",
+    "version": "1.0.0",
+    "active": true,
+    "proofPrecedents": ["Nath (Spain)", "Tuc Tuc (Spain)", "Kirei BD", "Amin Jewellers Ltd."]
+  },
+  {
+    "name": "Process Manufacturing & FMCG Supply Chain",
+    "countries": "Bangladesh, Mauritius, Regional emerging markets",
+    "industries": "FMCG, Food & Beverage, Packaging, Textiles, Industrial Manufacturing",
+    "employeeRange": "100-2,000+",
+    "businessModels": "Batch/recipe manufacturing, packaging production, auction-based trading",
+    "pains": "Lack of demand forecasting, production scheduling bottlenecks, manual regulatory tax filings, disconnected auction workflows",
+    "technology": "Fragmented custom desktop apps, paper-based floor logs, isolated accounting software",
+    "triggers": "Production capacity scaling, government e-invoicing/tax authority mandates, auction scale growth",
+    "version": "1.0.0",
+    "active": true,
+    "proofPrecedents": ["Ispahani Tea & Textiles (1,000+ users)", "Metal Packaging Co Ltd", "Akboria", "Tanin Group"]
+  },
+  {
+    "name": "Banking, NBFIs & Specialized Regulatory Workflows",
+    "countries": "Bangladesh, LATAM, Emerging markets",
+    "industries": "Financial Services, NBFIs, Economic Zones, Multi-country Enterprises",
+    "employeeRange": "200-5,000+",
+    "businessModels": "Financial lending, special economic development, cross-border corporate management",
+    "pains": "Manual loan management, audit tracking inefficiency, central bank compliance reporting, multi-country payroll friction",
+    "technology": "Disconnected banking tools, core systems lacking workflow automation, spreadsheet tracking",
+    "triggers": "Regulatory reporting mandates (e.g. Bangladesh Bank), international branch expansion, audit compliance deadlines",
+    "version": "1.0.0",
+    "active": true,
+    "proofPrecedents": ["BSEZ (Loan Management & Accounting)", "IDLC Finance Limited (Minutes Automation)", "MSI Americas (11+ LATAM Countries)"]
+  }
+]

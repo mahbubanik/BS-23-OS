@@ -4,13 +4,66 @@
   "safePositioning": [
     "ERP23 is Brain Station 23's dedicated Odoo ERP practice.",
     "Use 'Odoo partner since 2016' without naming a partner tier until internally reconfirmed.",
-    "Lead with phased delivery: GAP Analysis, Kick-Off, Implementation, Go-Live, then scoped expansion."
+    "Lead with phased delivery: GAP Analysis, Kick-Off, Implementation, Go-Live, then scoped expansion.",
+    "Certified across Odoo 12 through 17, with 7 certified functional/technical resources."
   ],
-  "approvedProof": [
-    { "client": "Ispahani Tea Ltd. & Pahartoli Textiles", "statement": "Internal vault record: 10-module custom Odoo ERP with Auction Management and 1,000+ licenses.", "use": "Confirm release approval before external use.", "source": "10-notes/clients/Ispahani Tea Ltd. & Pahartoli Textiles (Ispahani Group).md" },
-    { "client": "Valid Logistics (Mauritius)", "statement": "Internal vault record: middleware integrating Microsoft Dynamics with the Mauritius Revenue Authority, deployed in Spain for global operational scalability.", "use": "Use only for integration/logistics relevance and confirm release approval.", "source": "10-notes/clients/Valid Logistics (Mauritius).md" },
-    { "client": "Akboria", "statement": "Internal vault record: Odoo ERP involving demand forecasting and manufacturing lifecycle.", "use": "Use only for manufacturing relevance and confirm release approval.", "source": "10-notes/clients/Akboria.md" }
+  "odooClients": [
+    { "client": "Akboria", "industry": "Bakery / Manufacturing", "geography": "Bangladesh", "modules": ["Demand Forecasting", "Manufacturing Lifecycle"], "solution": "Odoo ERP with demand forecasting and manufacturing lifecycle", "complexity": null, "outcome": null, "source": "10-notes/clients/Akboria.md" },
+    { "client": "AKS Khan Pharmaceuticals Ltd", "industry": "Pharmaceuticals", "geography": null, "modules": null, "solution": "Odoo ERP implementation", "complexity": null, "outcome": null, "source": "10-notes/clients/AKS Khan Pharmaceuticals Ltd.md" },
+    { "client": "Amin Jewellers Ltd.", "industry": "Jewellery / Retail", "geography": null, "modules": ["Customized Goldsmith's Ledger"], "solution": "Full Odoo ERP with customized goldsmith's ledger for gold/diamond stock tracking", "complexity": "Customized goldsmith's ledger for gold/diamond stock tracking", "outcome": null, "source": "10-notes/clients/Amin Jewellers Ltd.md" },
+    { "client": "Augmedix Bangladesh", "industry": "Healthcare / Medical Documentation", "geography": "Bangladesh", "modules": ["Attendance Management"], "solution": "Odoo-based custom attendance management", "complexity": null, "outcome": null, "source": "10-notes/clients/Augmedix Bangladesh.md" },
+    { "client": "Bangladesh Special Economic Zone Ltd. (BSEZ)", "industry": "Special Economic Zone / Government", "geography": "Bangladesh", "modules": ["Loan Management", "Accounting", "Multicurrency", "Procurement", "SOP/Project Management"], "solution": "Odoo/AWS/IoT-dashboard with loan management, accounting, multicurrency, procurement", "complexity": null, "outcome": "5-star Clutch reviewer", "source": "10-notes/clients/Bangladesh Special Economic Zone Ltd. (BSEZ).md" },
+    { "client": "Base Technologies Ltd", "industry": "Technology / Retail", "geography": null, "modules": ["CRM"], "solution": "Odoo CRM (pipeline analysis, sales-target tracking)", "complexity": null, "outcome": null, "source": "10-notes/clients/Base Technologies Ltd.md" },
+    { "client": "DHCare NY", "industry": "Healthcare", "geography": "United States", "modules": ["Patient Management", "Ticketing", "Reporting"], "solution": "Odoo ERP: patient management, ticketing, reporting", "complexity": "Migration from Excel/ZOHO", "outcome": null, "source": "10-notes/clients/DHCare NY.md" },
+    { "client": "IDLC Finance Limited", "industry": "Financial Services / NBFI", "geography": "Bangladesh", "modules": ["Meeting Minutes Management"], "solution": "Odoo meeting-minutes management system with calendar booking, SMS/email invitations, Zoom initiation, attendance tracking, Bangladesh Bank submission formatting", "complexity": "Bangladesh Bank regulatory submission formatting", "outcome": null, "source": "10-notes/clients/IDLC Finance Limited.md" },
+    { "client": "Ispahani Tea Ltd. & Pahartoli Textiles (Ispahani Group)", "industry": "FMCG / Tea / Textiles", "geography": "Bangladesh", "modules": ["Auction Management", "plus 9 other modules"], "solution": "10-module custom Odoo ERP with Auction Management", "complexity": "10-module custom Odoo ERP with Auction Management at scale", "outcome": "1,000+ licenses deployed", "source": "10-notes/clients/Ispahani Tea Ltd. & Pahartoli Textiles (Ispahani Group).md" },
+    { "client": "Kirei BD", "industry": "Beauty Retail", "geography": "Bangladesh", "modules": ["E-commerce API sync"], "solution": "Odoo 18 + e-commerce API sync", "complexity": null, "outcome": null, "source": "10-notes/clients/Kirei BD.md" },
+    { "client": "LAMB Hospital", "industry": "Healthcare", "geography": "Bangladesh", "modules": ["Hospital Management", "Purchase", "Project", "HRMS"], "solution": "Odoo ERP: hospital management, purchase, project, HRMS", "complexity": null, "outcome": null, "source": "10-notes/clients/LAMB Hospital.md" },
+    { "client": "Matrix Finishes LLC", "industry": "Building Materials / Finishes", "geography": "UAE", "modules": ["Inventory", "Purchase & Accounting", "CRM & Sales", "HRMS"], "solution": "Odoo ERP: Inventory, Purchase & Accounting, CRM & Sales, HRMS", "complexity": null, "outcome": null, "source": "10-notes/clients/Matrix Finishes LLC.md" },
+    { "client": "Metal Packaging Co Ltd", "industry": "Metal Packaging / Manufacturing", "geography": "Mauritius", "modules": null, "solution": "Enhanced Odoo ERP with Docker-containerized middleware integrating VAT data with the Mauritius Revenue Authority (MRA)", "complexity": "Docker-containerized middleware integrating VAT data with Mauritius Revenue Authority", "outcome": "Automated tax reporting", "source": "10-notes/clients/Metal Packaging Co Ltd.md" },
+    { "client": "MSI Americas", "industry": "Banking / Fintech / Payments", "geography": "LATAM (11+ countries)", "modules": ["HR", "Payroll", "Custom Accounting/Finance"], "solution": "Multi-country (11+ LATAM countries) Odoo HR/payroll + custom accounting/finance modules", "complexity": "Multi-country (11+ LATAM countries) deployment", "outcome": null, "source": "10-notes/clients/MSI Americas.md" },
+    { "client": "Nath", "industry": "Retail", "geography": "Spain / Europe", "modules": ["Sales", "Purchase", "Inventory", "POS", "E-commerce", "Spanish-localized Accounting", "Barcode", "Odoo Studio"], "solution": "Odoo ERP migration from SAP", "complexity": "Migration from SAP; Spanish-localized Accounting", "outcome": null, "source": "10-notes/clients/Nath.md" },
+    { "client": "Neo Ventures Limited (Rahimafrooz concern)", "industry": "Retail / FMCG", "geography": null, "modules": null, "solution": "Odoo ERP implementation", "complexity": null, "outcome": null, "source": "10-notes/clients/Neo Ventures Limited (Rahimafrooz concern).md" },
+    { "client": "Next Spaces Limited", "industry": "Retail / E-commerce", "geography": null, "modules": null, "solution": "Odoo ERP implementation", "complexity": null, "outcome": null, "source": "10-notes/clients/Next Spaces Limited.md" },
+    { "client": "No1 Events", "industry": "Sports Events", "geography": "UAE", "modules": ["Event", "Project", "Sales", "Purchase", "Accounting", "HRMS"], "solution": "Odoo ERP (Event/Project/Sales/Purchase/Accounting/HRMS) plus XR solutions", "complexity": null, "outcome": "1,000+ try-ons in one week (XR mirror)", "source": "10-notes/clients/No1 Events.md" },
+    { "client": "Nutrition Depot", "industry": "Retail / FMCG", "geography": null, "modules": ["WooCommerce Connector"], "solution": "Odoo ERP with WooCommerce connector", "complexity": null, "outcome": null, "source": "10-notes/clients/Nutrition Depot.md" },
+    { "client": "Olympic Industries", "industry": "Manufacturing / FMCG", "geography": null, "modules": ["HRMS"], "solution": "Odoo HRMS implementation", "complexity": null, "outcome": null, "source": "10-notes/clients/Olympic Industries.md" },
+    { "client": "Otobi", "industry": "Furniture", "geography": "Bangladesh", "modules": ["HRMS"], "solution": "Odoo HRMS", "complexity": null, "outcome": null, "source": "10-notes/clients/Otobi.md" },
+    { "client": "Oxenham", "industry": "Beverage & Spirits", "geography": "Mauritius", "modules": ["Inventory", "Barcode"], "solution": "Integrated existing Sage ERP with Odoo for inventory-movement tracking and barcode functionality", "complexity": "Integration with existing Sage ERP", "outcome": null, "source": "10-notes/clients/Oxenham.md" },
+    { "client": "RACE ONLINE Limited", "industry": null, "geography": null, "modules": ["CRM", "Sales", "Service", "Accounting", "HRM", "Marketing"], "solution": "Odoo ERP quotation (CRM/Sales/Service/Accounting/HRM/Marketing)", "complexity": null, "outcome": null, "source": "10-notes/clients/RACE ONLINE Limited.md" },
+    { "client": "Rakayez Properties", "industry": "Real Estate", "geography": "UAE / MENA", "modules": null, "solution": "Odoo ERP with UAE VAT engine", "complexity": "UAE VAT engine", "outcome": null, "source": "10-notes/clients/Rakayez Properties.md" },
+    { "client": "Tanin Group", "industry": "Manufacturing", "geography": null, "modules": ["Manufacturing", "Accounting"], "solution": "Odoo ERP (manufacturing/production, accounting)", "complexity": null, "outcome": null, "source": "10-notes/clients/Tanin Group.md" },
+    { "client": "Tuc Tuc", "industry": "Retail", "geography": "Spain / Europe", "modules": ["Sales", "Purchase", "Inventory", "POS", "E-commerce", "Accounting", "Barcode", "Odoo Studio"], "solution": "Odoo ERP migration from SAP", "complexity": "Migration from SAP; Spanish-localized accounting", "outcome": null, "source": "10-notes/clients/Tuc Tuc.md" },
+    { "client": "Valid Logistics (Mauritius)", "industry": "Transportation / Supply-chain", "geography": "Mauritius", "modules": null, "solution": "Middleware integrating MS Dynamics with the Mauritius Revenue Authority; deployed in Spain for global operational scalability", "complexity": "Middleware integrating MS Dynamics with MRA; deployment in Spain", "outcome": "Global operational scalability", "source": "10-notes/clients/Valid Logistics (Mauritius).md" },
+    { "client": "Visco Logistics Bangladesh Ltd.", "industry": "Logistics", "geography": "Bangladesh", "modules": null, "solution": "Odoo ERP implementation", "complexity": null, "outcome": null, "source": "10-notes/clients/Visco Logistics Bangladesh Ltd.md" },
+    { "client": "Ispahani Group", "industry": "Conglomerate / FMCG", "geography": "Bangladesh", "modules": null, "solution": null, "complexity": null, "outcome": null, "source": "10-notes/clients/Ispahani Group.md" },
+    { "client": "Unnamed Mauritius statutory body (provident funds)", "industry": "Provident Funds / Government", "geography": "Mauritius", "modules": null, "solution": null, "complexity": null, "outcome": null, "source": "10-notes/clients/an unnamed Mauritius statutory body (provident funds.md" }
   ],
+  "industryExperience": {
+    "healthcare": ["LAMB Hospital", "DHCare NY", "Augmedix Bangladesh"],
+    "manufacturing": ["Akboria", "Metal Packaging Co Ltd", "Tanin Group", "Olympic Industries"],
+    "retail": ["Nath", "Tuc Tuc", "Kirei BD", "Neo Ventures Limited", "Next Spaces Limited", "Nutrition Depot", "Base Technologies Ltd"],
+    "fmcg": ["Ispahani Tea Ltd.", "Olympic Industries", "Neo Ventures Limited"],
+    "logistics": ["Valid Logistics", "Visco Logistics Bangladesh Ltd."],
+    "financial": ["BSEZ", "IDLC Finance Limited", "MSI Americas"],
+    "realEstate": ["Rakayez Properties"],
+    "events": ["No1 Events"],
+    "jewellery": ["Amin Jewellers Ltd."],
+    "beverage": ["Oxenham"],
+    "buildingMaterials": ["Matrix Finishes LLC"],
+    "furniture": ["Otobi"],
+    "pharma": ["AKS Khan Pharmaceuticals Ltd"],
+    "government": ["BSEZ", "Unnamed Mauritius statutory body"]
+  },
+  "complexityPatterns": {
+    "sapMigration": ["Nath", "Tuc Tuc"],
+    "legacyMigration": ["DHCare NY (Excel/ZOHO)", "Oxenham (Sage ERP)"],
+    "multiCountry": ["MSI Americas (11+ LATAM countries)"],
+    "governmentIntegration": ["BSEZ", "Metal Packaging Co Ltd (MRA)", "Valid Logistics (MRA)", "IDLC Finance Limited (Bangladesh Bank)"],
+    "customModules": ["Amin Jewellers Ltd. (Goldsmith's Ledger)", "Ispahani (Auction Management)", "IDLC Finance Limited (Meeting Minutes)"],
+    "ecommerceIntegration": ["Kirei BD (API sync)", "Nutrition Depot (WooCommerce)"],
+    "vatLocalization": ["Rakayez Properties (UAE VAT)", "Metal Packaging Co Ltd (Mauritius VAT)"]
+  },
   "doNotClaimWithoutCurrentVerification": [
     "Any Odoo partner tier such as Ready, Silver, or Gold.",
     "Current CMMI Level 3 status.",
@@ -20,6 +73,7 @@
   "retrievalRules": [
     "For client-facing output, retrieve this file plus only the directly relevant client note.",
     "Label internal proof as internal until independently approved for external sharing.",
-    "Do not send confidential customer notes, proposals, or credentials to search or LLM providers."
+    "Do not send confidential customer notes, proposals, or credentials to search or LLM providers.",
+    "When referencing a client, check if complexity and outcome fields exist before claiming specific results."
   ]
 }

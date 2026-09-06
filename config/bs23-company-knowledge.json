@@ -1,0 +1,64 @@
+{
+  "version": "2026-09-06",
+  "sourceOfTruth": "C:/Users/HP/Desktop/Claude/Vaults/BrainStation23-Vault/50-deliverables/claude-knowledge-architecture/BS23-Master-Context.md",
+  "identity": {
+    "legalName": "Brain Station 23 PLC",
+    "founded": 2006,
+    "founder": "Raisul Kabir",
+    "hq": "Dhaka, Bangladesh",
+    "tagline": "Driving Digital Transformation Worldwide",
+    "offices": ["Dhaka (HQ)", "Bad Zwischenahn, Germany", "Kuala Lumpur, Malaysia", "Springfield, Virginia, USA", "Dubai, UAE", "Tokyo, Japan (via Breste Inc.)"],
+    "marketPresence": "Netherlands, Norway, Sweden, Denmark, Switzerland, UK, Australia, Canada, Turkey, Mauritius, Trinidad & Tobago, Finland, Estonia"
+  },
+  "credibilityStack": [
+    { "claim": "20+ years in business", "caveat": "Founded 2006; older docs say 18+. Use figure matching document date." },
+    { "claim": "900+ professionals", "caveat": "Ranges 800-956 across documents. Use most recent." },
+    { "claim": "36+ countries reached", "caveat": "Ranges 25-36+ across documents. Flagged internally as inconsistent." },
+    { "claim": "88-92% retention", "caveat": "Two different figures in same source. Treat as approximate range." },
+    { "claim": "2,500-3,000+ projects delivered", "caveat": null },
+    { "claim": "1,500-2,000+ clients across 130+ sectors", "caveat": null },
+    { "claim": "ISO 9001:2015, ISO 27001:2013, CMMI Level 3", "caveat": "CMMI Level 3 appraisal #66835 expiry noted Sept 2026. Renewal unconfirmed. Do not assert current status without checking." }
+  ],
+  "sbus": [
+    { "name": "SBU ERP", "brand": "ERP23", "focus": "Odoo-based ERP implementation", "domain": "erp-23.com" },
+    { "name": "SBU NOP-Station", "brand": "nopStation", "focus": "nopCommerce/e-commerce", "domain": "nop-station.com", "highlight": "#1 global nopCommerce partner 6 consecutive years since 2020; 230+ live client sites" },
+    { "name": "SBU Health Tech", "focus": "AI diagnostics & automation, AEM platforms", "markets": "US/German focus" },
+    { "name": "SBU Europe", "focus": "SME SmartTech via local partners", "markets": "Europe & Japan" },
+    { "name": "SBU Unipet", "focus": "InsurTech + petroleum-industry domain, XR/AR/VR" },
+    { "name": "SBU FinTech", "focus": "Mobile banking, digital wallets" },
+    { "name": "SBU Telco", "focus": "WordPress/Laravel sites, Moodle LMS, telco compliance" },
+    { "name": "SBU JS", "focus": "Shopify storefronts, custom web apps" }
+  ],
+  "engagementModels": [
+    { "name": "Fixed-Price / Fixed-Budget", "use": "Well-scoped projects (MVPs, PoCs, defined modules)", "payment": "30/20/40/10 or 40/20/30/10 milestone split" },
+    { "name": "Resource/Staff Augmentation (RA)", "use": "Individual developers or dedicated team embedded in client process", "payment": "Monthly or T&M, 140-175 hrs/month" },
+    { "name": "Managed Services / Hybrid RA / BOOT", "use": "End-to-end ownership under SLAs/KPIs", "payment": "Per-user/month or tiered monthly minimum, often 36-month model" }
+  ],
+  "erp23Practice": {
+    "brand": "ERP23",
+    "partnerStatus": "Odoo partner since 2016. Do NOT claim a specific tier (Ready/Silver/Gold) until internally reconfirmed.",
+    "certifiedVersions": "Odoo 12 through 17",
+    "certifiedResources": "7 certified functional/technical resources",
+    "methodology": "GAP Analysis (10%) -> Kick-Off (5%) -> Implementation (80%, cyclical) -> Go-Live (5%) -> Second Deployment (variable)",
+    "team": "Project Manager, Business Analyst, Odoo Developer, DevOps"
+  },
+  "voiceRules": {
+    "register": {
+      "proposal": "Formal, first-person-plural corporate voice. Long sentences with subordinate clauses. Dense paragraphs.",
+      "deck": "Punchier. Short ALL-CAPS noun-phrase headlines. Minimal-sentence bullets.",
+      "social": "Conversational but professional. Proof-first."
+    },
+    "standardIntro": "Brain Station 23 is a team of experienced IT-Business Seniors and talented developers. We pride ourselves on being one of the top IT giants in the industry. By implementing the latest and the most innovative technologies, we work on challenging projects to offer comprehensive solutions meeting every need of our clients.",
+    "standardClosing": "With our expertise and customer-centric approach, Brain Station-23 is poised to deliver a cutting-edge solution that revolutionizes the [X] process and drives business success.",
+    "credibilityDeployment": "Deploy 3-5 credibility stack claims per proposal/pitch. Not just one.",
+    "proofFirst": "Open with a named client precedent, not a generic module list.",
+    "recurringVocab": ["cutting-edge", "seamless", "robust", "comprehensive", "customer-centric", "end-to-end", "empower"],
+    "vocabRule": "Use 1-2 per section. Not a wall of buzzwords."
+  },
+  "caseStudyFormats": {
+    "A_longForm": "OVERVIEW -> CHALLENGES -> SOLUTION -> BUSINESS IMPACT -> FUTURE IMPACT -> FEATURES -> KEY TECHNOLOGY USED",
+    "B_compact": "[Client Name] -> Number of users -> Role -> Operational Since -> Impact (bulleted)",
+    "C_slide": "Headline noun-phrase title, client logo, left: Business Challenge/Solution, right: Features Implemented tag-grid + Technology logo grid. ERP/Odoo slides add 'Incorporated Model' sidebar box with module checklist.",
+    "D_internalVault": "Client -> Challenge -> Solution -> Technology -> Impact (bold headline metric)"
+  }
+}

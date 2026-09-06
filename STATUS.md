@@ -8,19 +8,17 @@
 - Private Notion Accounts and Research Evidence databases, bidirectional relation, local secret configuration, and live read-only verification.
 
 ## IN PROGRESS
-- Phase 2 server-side public-research account/evidence sync is ready for its first real account.
-- Existing 338-record campaign archive is mapped to a local, company-only review preview; import remains deliberately review-gated.
-- Deterministic 20-account research queue is ready from existing priority and segmentation data.
-- First five queue accounts have a local public-evidence review draft; no unreviewed records were synced.
-- BS23 Vault was located and its master-context verification rules are encoded in the ERP knowledge guardrail.
-- Full private Notion sales brain (10 data sources and 8 relation pairs) is live and verified; deterministic agent registry and router are implemented.
-- GitHub remote is now set to `mahbubanik/BS-23-OS`; the remote was empty when connected.
-- Microsoft 365 is the selected email/calendar layer. The approved Outlook Calendar connection was verified read-only; mailbox messages were not inspected.
-- Four curated, internal-only ERP23 Odoo knowledge summaries are seeded and verified in private Notion. They retain an external-release approval warning; no vault files were uploaded.
-- Outlook meeting-prep context is now minimized before agent use; raw event bodies, meeting credentials, IDs, and identities are excluded by design.
-- Pages deployment no longer runs on every push while Pages is disabled; it is a manual workflow using Node 24 and configure-pages v6.
-- Account sync now rejects `review` and `not-a-fit` records; the first public research batch remains correctly review-gated because ERP, pain, and trigger evidence is still unknown.
-- Deterministic Meeting Copilot prep drafts are implemented and tested; output remains local and approval-gated.
+- 30 BS23 Odoo client files structured from vault notes into config/bs23-erp-knowledge.json with industry mapping and complexity patterns.
+- BS23 company identity, credibility stack, SBUs, engagement models, and voice guide structured into config/bs23-company-knowledge.json.
+- Notion knowledge seeder implemented in integrations/seed-bs23-knowledge.mjs.
+- Grounded communication draft builder implemented in tools/build-communication-draft.mjs.
+- On-demand company research tool implemented in tools/research-company.mjs.
+- Personal segment GTM builder implemented in tools/build-segment-gtm.mjs.
+- Gemini API intelligence adapter implemented in integrations/gemini-client.mjs.
+- Post-meeting notes analyzer implemented in tools/analyze-meeting-notes.mjs.
+- Deal evaluator and Next Best Action recommender implemented in tools/evaluate-deal.mjs.
+- Daily Operator (morning plan, activity capture, EOD summary) implemented in tools/daily-operator.mjs.
+- 37 automated tests passing across 16 test suites.
 
 ## NEXT
 - Export one qualified public-research account and run the server-side sync adapter from a trusted environment.
