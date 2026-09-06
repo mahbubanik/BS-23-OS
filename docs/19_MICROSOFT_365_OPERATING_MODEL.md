@@ -22,3 +22,5 @@ The approved Outlook connector is the preferred path for interactive work. It av
 5. After the meeting, the user approves which confirmed facts, tasks, and commitments are written to Notion.
 
 No email sending, calendar changes, contact creation, or bulk synchronization is part of this workflow.
+
+The agent must receive a minimized event context, never the raw Outlook connector response. `tools/prepare-meeting-context.mjs` retains only the event subject, time window, generic location label, and attendee count. It excludes event IDs, bodies, links, passcodes, attendee identities, and organizer identity.
