@@ -16,9 +16,11 @@
 - Full private Notion sales brain (10 data sources and 8 relation pairs) is live and verified; deterministic agent registry and router are implemented.
 - GitHub remote is now set to `mahbubanik/BS-23-OS`; the remote was empty when connected.
 - Microsoft 365 is the selected email/calendar layer. The approved Outlook Calendar connection was verified read-only; mailbox messages were not inspected.
+- Four curated, internal-only ERP23 Odoo knowledge summaries are seeded and verified in private Notion. They retain an external-release approval warning; no vault files were uploaded.
 
 ## NEXT
-- Publish the local Sales OS baseline to the connected private GitHub repository.
+- Export one qualified public-research account and run the server-side sync adapter from a trusted environment.
+- Build the approval-gated Outlook meeting-prep handoff: choose event, choose Account/Opportunity, prepare a draft, then write only confirmed facts/tasks to Notion.
 - Export one qualified public-research account and run the server-side sync adapter from a trusted environment.
 - Add a legitimate search API only if manual search becomes the bottleneck.
 
