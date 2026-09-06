@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "thresholds": { "qualified": 65, "review": 40 },
+  "criteria": [
+    { "id": "industry", "label": "Industry match", "max": 15 },
+    { "id": "geography", "label": "Geography match", "max": 10 },
+    { "id": "employeeRange", "label": "Employee-size match", "max": 10 },
+    { "id": "businessModel", "label": "Business-model match", "max": 10 },
+    { "id": "operationalComplexity", "label": "Operational complexity", "max": 15 },
+    { "id": "painSignals", "label": "Verified pain signals", "max": 15 },
+    { "id": "technology", "label": "Technology / ERP fit", "max": 10 },
+    { "id": "expansionSignals", "label": "Expansion or trigger", "max": 10 },
+    { "id": "evidence", "label": "Evidence quality", "max": 5 }
+  ]
+}
+

@@ -1,0 +1,25 @@
+{
+  "version": "2026-09-06",
+  "sourceOfTruth": "C:/Users/HP/Desktop/Claude/Vaults/BrainStation23-Vault/50-deliverables/claude-knowledge-architecture/BS23-Master-Context.md",
+  "safePositioning": [
+    "ERP23 is Brain Station 23's dedicated Odoo ERP practice.",
+    "Use 'Odoo partner since 2016' without naming a partner tier until internally reconfirmed.",
+    "Lead with phased delivery: GAP Analysis, Kick-Off, Implementation, Go-Live, then scoped expansion."
+  ],
+  "approvedProof": [
+    { "client": "Ispahani Tea Ltd. & Pahartoli Textiles", "statement": "Internal vault record: 10-module custom Odoo ERP with Auction Management and 1,000+ licenses.", "use": "Confirm release approval before external use.", "source": "10-notes/clients/Ispahani Tea Ltd. & Pahartoli Textiles (Ispahani Group).md" },
+    { "client": "Valid Logistics (Mauritius)", "statement": "Internal vault record: middleware integrating Microsoft Dynamics with the Mauritius Revenue Authority, deployed in Spain for global operational scalability.", "use": "Use only for integration/logistics relevance and confirm release approval.", "source": "10-notes/clients/Valid Logistics (Mauritius).md" },
+    { "client": "Akboria", "statement": "Internal vault record: Odoo ERP involving demand forecasting and manufacturing lifecycle.", "use": "Use only for manufacturing relevance and confirm release approval.", "source": "10-notes/clients/Akboria.md" }
+  ],
+  "doNotClaimWithoutCurrentVerification": [
+    "Any Odoo partner tier such as Ready, Silver, or Gold.",
+    "Current CMMI Level 3 status.",
+    "A single exact employee count, country count, client count, project count, or retention rate from conflicting historical materials.",
+    "Detailed work for a logo-wall client where the vault has no documented case-study detail."
+  ],
+  "retrievalRules": [
+    "For client-facing output, retrieve this file plus only the directly relevant client note.",
+    "Label internal proof as internal until independently approved for external sharing.",
+    "Do not send confidential customer notes, proposals, or credentials to search or LLM providers."
+  ]
+}

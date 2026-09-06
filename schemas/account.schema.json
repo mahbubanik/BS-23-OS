@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Account Research Record",
+  "type": "object",
+  "required": ["id", "company", "country", "status", "evidence", "score"],
+  "properties": {
+    "id": { "type": "string" },
+    "company": { "type": "string" },
+    "website": { "type": "string" },
+    "country": { "type": "string" },
+    "industry": { "type": "string" },
+    "employeeEstimate": { "type": "string" },
+    "businessModel": { "type": "string" },
+    "erpStatus": { "type": "string" },
+    "operationalComplexity": { "type": "string" },
+    "painSignals": { "type": "string" },
+    "technology": { "type": "string" },
+    "expansionSignals": { "type": "string" },
+    "notes": { "type": "string" },
+    "status": { "enum": ["qualified", "review", "not-a-fit"] },
+    "score": { "type": "object" },
+    "evidence": { "type": "array", "items": { "$ref": "evidence.schema.json" } }
+  }
+}
+

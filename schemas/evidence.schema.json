@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Evidence Item",
+  "type": "object",
+  "required": ["classification", "claim"],
+  "properties": {
+    "classification": { "enum": ["FACT", "INFERENCE", "UNKNOWN"] },
+    "claim": { "type": "string" },
+    "url": { "type": "string" },
+    "sourceName": { "type": "string" },
+    "confidence": { "enum": ["high", "medium", "low"] }
+  }
+}
+

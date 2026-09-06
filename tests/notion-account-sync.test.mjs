@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import { createPublicResearchAccount, publicAccountProperties, publicEvidenceProperties, selectAccount } from '../integrations/notion-account-sync.mjs';
+
+const account = { company: 'Example Distribution', country: 'UK', website: 'https://example.test', industry: 'Distribution', score: { total: 77, status: 'qualified' }, nextAction: 'Identify the Operations owner.', salesAngle: 'Verified inventory friction.', savedAt: '2026-09-06T00:00:00.000Z', notes: 'Must not be synced.', evidence: [{ classification: 'FACT', claim: 'Has three warehouses.', url: 'https://example.test/warehouses', sourceName: 'Company site', confidence: 'high' }] };
+const props = publicAccountProperties(account);
+assert.equal(props.Name.title[0].text.content, 'Example Distribution');
+assert.equal(props.Qualification.select.name, 'Qualified');
+assert.equal(props['ICP score'].number, 77);
+assert.equal('notes' in props, false, 'free-form notes are excluded from public-research sync');
+assert.equal(publicEvidenceProperties(account.evidence[0], 'account-page').Account.relation[0].id, 'account-page');
+assert.equal(selectAccount({ accounts: [account] }).company, 'Example Distribution');
+assert.equal(selectAccount({ accounts: [account, { ...account, company: 'Second Co' }] }, 'Second Co').company, 'Second Co');
+assert.throws(() => selectAccount({ accounts: [account, { ...account, company: 'Second Co' }] }), /exact company name/);
+const calls = [];
+const fakeFetch = async (url, options) => { calls.push({ url, options }); const id = calls.length === 1 ? 'account-page' : calls.length === 2 ? 'evidence-page' : 'patched-page'; return { ok: true, status: 200, json: async () => ({ id }), text: async () => '' }; };
+const result = await createPublicResearchAccount(account, { NOTION_TOKEN: 'secret', NOTION_ACCOUNTS_DATA_SOURCE_ID: 'accounts', NOTION_EVIDENCE_DATA_SOURCE_ID: 'evidence' }, fakeFetch);
+assert.deepEqual(result, { accountPageId: 'account-page', evidencePageIds: ['evidence-page'] });
+assert.equal(calls.length, 3, 'create account, create evidence, link evidence');
+assert.equal(calls[0].options.headers['Notion-Version'], '2026-03-11');
+await assert.rejects(() => createPublicResearchAccount(account, {}, fakeFetch), /NOTION_TOKEN/);
+console.log('Notion account-sync checks passed.');

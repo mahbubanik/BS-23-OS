@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#103c37" />
+    <title>BS23 Sales OS — ICP MVP</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header><p class="eyebrow">BRAIN STATION 23 · SALES OS</p><h1>ICP Research</h1><p>Evidence first. Score second. No guesswork presented as fact.</p></header>
+      <nav aria-label="MVP sections"><button class="tab active" data-view="icp">1 · ICP</button><button class="tab" data-view="research">2 · Research</button><button class="tab" data-view="accounts">3 · Accounts</button></nav>
+
+      <section id="icp" class="view active">
+        <div class="card"><h2>Define today’s ICP</h2><p class="muted">Blank fields mean “not a scoring requirement.” Use comma-separated values where relevant.</p>
+          <form id="icp-form" class="form-grid">
+            <label>Countries / regions<input name="countries" placeholder="e.g., UK, Germany, UAE" /></label>
+            <label>Industries<input name="industries" placeholder="e.g., wholesale, distribution" /></label>
+            <label>Employee range<select name="employeeRange"><option value="">Any size</option><option>11–50</option><option>51–200</option><option>201–1000</option><option>1000+</option></select></label>
+            <label>Business models<input name="businessModels" placeholder="e.g., B2B wholesale, manufacturer" /></label>
+            <label>Operational complexity<input name="complexity" placeholder="e.g., multi-warehouse, import/export" /></label>
+            <label>Priority pains<input name="painSignals" placeholder="e.g., fragmented ERP, stock mismatch" /></label>
+            <label>Technology / ERP clues<input name="technology" placeholder="e.g., legacy ERP, spreadsheets" /></label>
+            <label>Expansion triggers<input name="expansionSignals" placeholder="e.g., new market, e-commerce launch" /></label>
+            <button type="submit" class="primary">Save ICP</button><button type="button" id="load-bs23-icp" class="secondary">Use BS23 starting ICP</button><button type="button" id="find-companies" class="secondary">Find companies</button>
+          </form>
+        </div>
+        <div id="icp-summary" class="notice" aria-live="polite"></div>
+      </section>
+
+      <section id="research" class="view">
+        <div class="card"><h2>Research an account</h2><p class="muted">Enter claims from public sources. A claim with no URL stays an inference, not a fact.</p>
+          <form id="account-form" class="form-grid">
+            <label>Company *<input required name="company" placeholder="Company name" /></label><label>Website<input type="url" name="website" placeholder="https://" /></label>
+            <label>Country / region *<input required name="country" /></label><label>Industry<input name="industry" /></label>
+            <label>Employee estimate<input name="employeeEstimate" placeholder="e.g., 51–200" /></label><label>Business model<input name="businessModel" placeholder="e.g., B2B wholesaler" /></label>
+            <label>ERP / software status<input name="erpStatus" placeholder="Known, suspected, or unknown" /></label><label>Operational complexity<input name="operationalComplexity" placeholder="Specific operational clues" /></label>
+            <label>Verified pain signals<textarea name="painSignals" placeholder="What source-supported friction or gap exists?"></textarea></label><label>Technology clues<textarea name="technology" placeholder="ERP, warehouse, e-commerce, marketplace clues"></textarea></label>
+            <label>Expansion / trigger events<textarea name="expansionSignals" placeholder="Dated, public changes only"></textarea></label><label>Research notes<textarea name="notes" placeholder="Keep facts separate from hypotheses"></textarea></label>
+            <div class="full"><h3>Evidence ledger</h3><div id="evidence-list"></div><button type="button" id="add-evidence" class="secondary small">+ Add evidence</button></div>
+            <button type="submit" class="primary">Score & save</button><button type="reset" class="secondary">Clear</button>
+          </form>
+        </div>
+        <article id="result" class="card result" hidden aria-live="polite"></article>
+      </section>
+
+      <section id="accounts" class="view"><div class="card"><div class="split"><div><h2>Saved accounts</h2><p class="muted">Saved only in this browser until exported.</p></div><div><button id="export-accounts" class="secondary small">Export accounts</button><button id="clear-accounts" class="danger small">Clear local data</button></div></div><div id="account-list"></div></div></section>
+    </main>
+    <template id="evidence-template"><fieldset class="evidence"><label>Type<select name="classification"><option>FACT</option><option>INFERENCE</option><option>UNKNOWN</option></select></label><label>Claim<input name="claim" placeholder="A specific, concise statement" /></label><label>Source URL<input name="url" type="url" placeholder="https://" /></label><label>Source name<input name="sourceName" placeholder="Company site, annual report…" /></label><label>Confidence<select name="confidence"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></label><button type="button" class="remove-evidence danger small">Remove</button></fieldset></template>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const run = request => JSON.parse(execFileSync(process.execPath, [path.join(root, 'tools/route-sales-request.mjs'), request], { cwd: root, encoding: 'utf8' }));
+assert.equal(run('Research Petromax').route, 'account_intelligence');
+assert.equal(run('Prepare meeting with Acme').route, 'meeting_copilot');
+assert.equal(run('What should I do today?').route, 'daily_operator');
+assert.equal(run('Draft a follow-up').mode, 'draft-only');
+console.log('Sales router checks passed.');
