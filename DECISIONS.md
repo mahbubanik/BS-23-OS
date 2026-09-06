@@ -1,5 +1,11 @@
 # Decisions
 
+## Authority order
+
+- The BrainStation23 Vault is the primary source of truth for business context, client notes, approved claims, and internal knowledge.
+- `Instantly_Campaign\brainstation23-sales-os` is the secondary implementation workspace and GitHub mirror.
+- Private Notion is the operational structured layer; it must not override the vault without explicit review.
+
 | Decision | Reason | Consequence |
 |---|---|---|
 | Static phone-first MVP | Usable tomorrow with no credentials or hosting dependency | Records are browser-local until export/Notion sync is enabled |

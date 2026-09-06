@@ -29,6 +29,14 @@ Build a phone-first, evidence-led sales operating system for Brain Station 23 / 
 
 The GitHub and local project copies contain the implementation. The vault copy is the portable knowledge/handoff copy. Keep the vault copy free of `.env`, `.git`, generated `dist/`, and temporary `local-output/` data.
 
+## Authority order
+
+1. **Primary — BrainStation23 Vault:** authoritative business context, source documents, client notes, approved positioning, and internal truth.
+2. **Secondary — `Instantly_Campaign\brainstation23-sales-os`:** implementation, schemas, agents, tests, and deployment configuration mirrored to GitHub.
+3. **Operational — private Notion Sales Brain:** structured working records created from reviewed evidence and approved vault knowledge.
+
+When sources conflict, consult the primary vault first. Never overwrite vault truth from an unreviewed campaign row, generated output, or Notion draft.
+
 ## Current implementation
 
 - Phone-first static ICP app in `app/`.
