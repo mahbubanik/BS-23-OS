@@ -20,6 +20,7 @@
 - Outlook meeting-prep context is now minimized before agent use; raw event bodies, meeting credentials, IDs, and identities are excluded by design.
 - Pages deployment no longer runs on every push while Pages is disabled; it is a manual workflow using Node 24 and configure-pages v6.
 - Account sync now rejects `review` and `not-a-fit` records; the first public research batch remains correctly review-gated because ERP, pain, and trigger evidence is still unknown.
+- Deterministic Meeting Copilot prep drafts are implemented and tested; output remains local and approval-gated.
 
 ## NEXT
 - Export one qualified public-research account and run the server-side sync adapter from a trusted environment.

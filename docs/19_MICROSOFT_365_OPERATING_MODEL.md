@@ -24,3 +24,5 @@ The approved Outlook connector is the preferred path for interactive work. It av
 No email sending, calendar changes, contact creation, or bulk synchronization is part of this workflow.
 
 The agent must receive a minimized event context, never the raw Outlook connector response. `tools/prepare-meeting-context.mjs` retains only the event subject, time window, generic location label, and attendee count. It excludes event IDs, bodies, links, passcodes, attendee identities, and organizer identity.
+
+`tools/build-meeting-prep-draft.mjs` then combines that safe context with one selected Account. Its output is a draft containing facts, hypotheses, unknowns, evidence IDs, and recommended actions. It does not send mail or write meeting notes automatically.
