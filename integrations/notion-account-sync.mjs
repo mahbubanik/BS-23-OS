@@ -37,6 +37,7 @@ export async function createPublicResearchAccount(account, env = process.env, re
   const missing = required.filter(name => !env[name]);
   if (missing.length) throw new Error(`Missing environment variable(s): ${missing.join(', ')}`);
   if (!account?.company || !account?.country || !account?.score) throw new Error('Account must contain company, country, and score.');
+  if (account.score.status !== 'qualified') throw new Error('Only qualified accounts may be synced. Add source-backed evidence and review again before syncing.');
   const api = async (path, method, body) => {
     const response = await request(`https://api.notion.com/v1${path}`, { method, headers: { Authorization: `Bearer ${env.NOTION_TOKEN}`, 'Notion-Version': VERSION, 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     if (!response.ok) throw new Error(`Notion ${method} ${path} failed (${response.status}): ${await response.text()}`);

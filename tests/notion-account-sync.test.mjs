@@ -21,4 +21,5 @@ const reusedFetch = async (url, options) => ({ ok: true, status: 200, json: asyn
 const reused = await createPublicResearchAccount(account, { NOTION_TOKEN: 'secret', NOTION_ACCOUNTS_DATA_SOURCE_ID: 'accounts', NOTION_EVIDENCE_DATA_SOURCE_ID: 'evidence' }, reusedFetch);
 assert.equal(reused.reusedAccount, true);
 await assert.rejects(() => createPublicResearchAccount(account, {}, fakeFetch), /NOTION_TOKEN/);
+await assert.rejects(() => createPublicResearchAccount({ ...account, score: { total: 55, status: 'review' } }, { NOTION_TOKEN: 'secret', NOTION_ACCOUNTS_DATA_SOURCE_ID: 'accounts', NOTION_EVIDENCE_DATA_SOURCE_ID: 'evidence' }, fakeFetch), /Only qualified/);
 console.log('Notion account-sync checks passed.');
