@@ -1,22 +1,32 @@
 # Brain Station 23 Sales OS
 
-Phone-first, evidence-led sales research for BS23 Odoo ERP work.
+Phone-first, evidence-led sales operations for BS23 Odoo ERP work.
 
-## Tomorrow MVP
+## Online sales desk
 
-The `app/` directory is a static browser app. It requires no account, API key, server, or LLM to score and save researched accounts. Data stays in the browser until you export it. That makes it safe to use immediately, but it is not a shared team database yet.
+The public GitHub Pages app is available at https://mahbubanik.github.io/BS-23-OS/.
 
-1. Open `app/index.html` in Chrome/Edge, or serve the repository with any static-file host.
-2. Define the ICP on the first screen; it is saved in this browser.
-3. Use **Find companies** to open a search, research a company in a normal browser tab, then record only sourced facts in the research form.
-4. Add evidence URLs and mark every statement as Fact, Inference, or Unknown.
-5. Press **Score & save**. The result tells you why it qualified and what to do next.
-6. Use **Export accounts** at the end of the day as your backup/import file.
+It contains a phone-first desk with working browser-local workflows for:
 
-For a cloud URL, enable **Settings → Pages → Source → GitHub Actions** first, then manually run **Deploy ICP MVP** from the Actions tab. The deployment workflow is intentionally manual so a repository with Pages disabled does not fail on every push. GitHub Pages on GitHub Free is available only from public repositories; private-repository Pages requires an eligible paid GitHub plan. Open the deployed `/app/` path. The static UI contains no secrets and saved records remain in the user's browser, but do not use a public site on a shared device or for client-sensitive notes.
+- Account research evidence capture and deterministic qualification
+- Meeting note analysis
+- Deal health and next-best-action checks
+- Daily priority planning and activity capture
+- Evidence-led communication briefs
+- Exportable browser-local account memory
 
-## Quality boundary
+The Pages app never contains Notion credentials, Gemini credentials, vault content, client notes, or raw confidential data. Browser records remain on the device until exported.
 
-The browser does not claim to discover facts automatically. Search results and public webpages are evidence sources; the user records the claim, URL, and confidence. The deterministic scorer then makes the qualification reproducible. Future server-side integrations belong behind `integrations/`, never in browser JavaScript.
+## Secure cloud agents
 
-See `docs/17_TOMORROW_MVP.md` for the exact first-day workflow.
+server/worker.mjs is a Cloudflare Worker service ready to expose the agent registry, routing, research, meeting analysis, deal evaluation, daily planning, and Gemini-backed communication through a private authenticated API. The Pages app asks for the service URL and an access token only in the current browser session.
+
+Deploy it only after adding SALES_OS_ACCESS_TOKEN and GEMINI_API_KEY as Worker secrets. The secret setup and deployment steps are in docs/ONLINE_AGENT_SERVICE.md. Do not put a secret in a Pages configuration file, browser local storage, Git, or Notion.
+
+## Validation
+
+Run these from the project root:
+
+    node --test tests/*.test.mjs
+    node tools/verify-sales-brain.mjs
+    node tools/build-site.mjs

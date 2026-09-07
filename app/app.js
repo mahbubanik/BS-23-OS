@@ -1,87 +1,62 @@
-/* Phase 1 is deliberately deterministic: no API key or LLM is needed to research, score, save, or export. */
-const $ = (selector, root = document) => root.querySelector(selector);
-const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
-const STORE = { icp: 'bs23.salesos.icp.v1', accounts: 'bs23.salesos.accounts.v1' };
-const fallbackScoring = {
-  thresholds: { qualified: 65, review: 40 },
-  criteria: [
-    { id: 'industry', max: 15 }, { id: 'geography', max: 10 }, { id: 'employeeRange', max: 10 },
-    { id: 'businessModel', max: 10 }, { id: 'operationalComplexity', max: 15 }, { id: 'painSignals', max: 15 },
-    { id: 'technology', max: 10 }, { id: 'expansionSignals', max: 10 }, { id: 'evidence', max: 5 }
-  ]
-};
-const bs23StartingIcp = { countries: '', industries: 'beauty, fragrance, cosmetics, wholesale, distribution', employeeRange: '', businessModels: 'B2B, wholesale, distributor', complexity: 'multi-warehouse, cross-border, import/export, multi-channel', painSignals: 'stock mismatch, manual order entry, reconciliation, spreadsheet', technology: 'legacy ERP, ERP, Shopify, Odoo', expansionSignals: '' };
-let scoring = fallbackScoring;
-let weights = Object.fromEntries(scoring.criteria.map(({ id, max }) => [id, max]));
-let icp = read(STORE.icp, {}), accounts = read(STORE.accounts, []);
-
-function read(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback; } catch { return fallback; } }
-function write(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-function values(text = '') { return text.toLowerCase().split(',').map(x => x.trim()).filter(Boolean); }
-function matches(need, actual) { const required = values(need), candidate = (actual || '').toLowerCase(); return !required.length ? null : required.some(item => candidate.includes(item)); }
-function exactRange(need, actual) { return !need ? null : (need === actual ? true : false); }
-function evidenceScore(evidence, max) { const facts = evidence.filter(e => e.classification === 'FACT' && e.url); const high = facts.filter(e => e.confidence === 'high').length; return facts.length >= 3 && high >= 1 ? max : facts.length >= 2 ? Math.round(max * 0.8) : facts.length ? Math.round(max * 0.4) : 0; }
-function points(isMatch, max, label, emptyText = 'No ICP requirement') { if (isMatch === null) return { points: 0, max, reason: `${label}: ${emptyText}` }; return { points: isMatch ? max : 0, max, reason: `${label}: ${isMatch ? 'matches ICP' : 'does not match or is not evidenced'}` }; }
-function scoreAccount(a) {
-  const rows = [
-    points(matches(icp.industries, a.industry), weights.industry, 'Industry'),
-    points(matches(icp.countries, a.country), weights.geography, 'Geography'),
-    points(exactRange(icp.employeeRange, a.employeeEstimate), weights.employeeRange, 'Employee size'),
-    points(matches(icp.businessModels, a.businessModel), weights.businessModel, 'Business model'),
-    points(matches(icp.complexity, a.operationalComplexity), weights.operationalComplexity, 'Complexity'),
-    points(matches(icp.painSignals, a.painSignals), weights.painSignals, 'Pain signals'),
-    points(matches(icp.technology, `${a.erpStatus} ${a.technology}`), weights.technology, 'Technology / ERP'),
-    points(matches(icp.expansionSignals, a.expansionSignals), weights.expansionSignals, 'Expansion trigger')
-  ];
-  const evidence = evidenceScore(a.evidence, weights.evidence); rows.push({ points: evidence, max: weights.evidence, reason: `Evidence quality: ${evidence}/${weights.evidence} from sourced facts` });
+/* Browser mode stays local. Protected cloud actions use an optional private service. */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const STORE = { accounts: 'bs23.salesos.accounts.v1', serviceUrl: 'bs23.salesos.service-url.v1' };
+const TOKEN = 'bs23.salesos.service-token.v1';
+const criteria = { industry: 15, geography: 10, employeeRange: 10, businessModel: 10, operationalComplexity: 15, painSignals: 15, technology: 10, expansionSignals: 10, evidence: 5 };
+let accounts = read(STORE.accounts, []), latestAccount = null;
+let icp = { countries: '', industries: 'beauty, fragrance, cosmetics, wholesale, distribution', employeeRange: '', businessModels: 'B2B, wholesale, distributor', complexity: 'multi-warehouse, cross-border, import/export, multi-channel', painSignals: 'stock mismatch, manual order entry, reconciliation, spreadsheet', technology: 'legacy ERP, ERP, Shopify, Odoo', expansionSignals: '' };
+const routes = [
+  ['meeting_copilot', 'meeting', ['prepare meeting', 'meeting notes', 'meeting follow-up', 'meeting', 'notes']],
+  ['communication', 'research', ['draft', 'email', 'linkedin', 'whatsapp', 'objection', 'outreach']],
+  ['deal_strategist', 'deal', ['deal', 'next best action', 'deal health', 'proposal']],
+  ['daily_operator', 'daily', ['today', 'priorities', 'end of day', 'activity', 'daily']],
+  ['account_intelligence', 'research', ['research', 'find companies', 'icp', 'qualify', 'company']]
+];
+function read(k, f) { try { return JSON.parse(localStorage.getItem(k)) || f; } catch { return f; } }
+function write(k, v) { localStorage.setItem(k, JSON.stringify(v)); }
+function esc(v = '') { const d = document.createElement('div'); d.textContent = String(v); return d.innerHTML; }
+function terms(v = '') { return v.toLowerCase().split(',').map(x => x.trim()).filter(Boolean); }
+function match(need, value) { const requested = terms(need), actual = (value || '').toLowerCase(); return !requested.length ? null : requested.some(item => actual.includes(item)); }
+function point(ok, max, label) { return { points: ok ? max : 0, max, reason: label + ': ' + (ok ? 'matches ICP' : 'not evidenced') }; }
+function evidenceScore(evidence) { const facts = evidence.filter(e => e.classification === 'FACT' && e.url); const high = facts.filter(e => e.confidence === 'high').length; return facts.length >= 3 && high ? 5 : facts.length >= 2 ? 4 : facts.length ? 2 : 0; }
+function score(a) {
+  const rows = [point(match(icp.industries, a.industry), criteria.industry, 'Industry'), point(match(icp.countries, a.country), criteria.geography, 'Geography'), point(icp.employeeRange ? icp.employeeRange === a.employeeEstimate : false, criteria.employeeRange, 'Employee size'), point(match(icp.businessModels, a.businessModel), criteria.businessModel, 'Business model'), point(match(icp.complexity, a.operationalComplexity), criteria.operationalComplexity, 'Complexity'), point(match(icp.painSignals, a.painSignals), criteria.painSignals, 'Pain signals'), point(match(icp.technology, (a.erpStatus || '') + ' ' + (a.technology || '')), criteria.technology, 'Technology'), point(match(icp.expansionSignals, a.expansionSignals), criteria.expansionSignals, 'Expansion trigger')];
+  const evidence = evidenceScore(a.evidence); rows.push({ points: evidence, max: 5, reason: 'Evidence quality: ' + evidence + '/5 from sourced facts' });
   const total = rows.reduce((sum, row) => sum + row.points, 0);
-  return { total, max: Object.values(weights).reduce((sum, max) => sum + max, 0), rows, status: total >= scoring.thresholds.qualified ? 'qualified' : total >= scoring.thresholds.review ? 'review' : 'not-a-fit' };
+  return { total, rows, status: total >= 65 ? 'qualified' : total >= 40 ? 'review' : 'not-a-fit' };
 }
-function recommendedAction(a, s) {
-  const facts = a.evidence.filter(e => e.classification === 'FACT' && e.url).length;
-  if (!facts) return 'Add at least one source-backed fact before outreach or qualification.';
-  if (s.status === 'qualified' && a.painSignals) return 'Identify the Operations or Finance owner; prepare a two-sentence evidence-led outreach angle around the verified pain.';
-  if (s.status === 'qualified') return 'Find one operational pain or trigger, then identify the likely Operations / Finance owner.';
-  if (s.status === 'review') return 'Research the missing ICP criteria. Do not treat a weak fit as qualified yet.';
-  return 'Archive for now unless a new, source-backed trigger appears.';
-}
-function salesAngle(a) { if (a.painSignals) return `Lead with the documented friction: ${a.painSignals.slice(0, 160)}${a.painSignals.length > 160 ? '…' : ''}`; if (a.operationalComplexity) return `Explore whether ${a.operationalComplexity.slice(0, 160)} creates inventory, order, or finance hand-off friction.`; return 'No angle yet: gather a concrete operational signal before outreach.'; }
-function renderIcp() { const form = $('#icp-form'); Object.entries(icp).forEach(([key, value]) => { if (form.elements[key]) form.elements[key].value = value; }); $('#icp-summary').textContent = Object.keys(icp).length ? 'Current ICP is saved in this browser. Search and scoring use these fields.' : 'Set the criteria you care about, then save the ICP.'; }
-function addEvidence(value = {}) { const node = $('#evidence-template').content.firstElementChild.cloneNode(true); $$('[name]', node).forEach(el => el.value = value[el.name] || el.value); $('.remove-evidence', node).addEventListener('click', () => node.remove()); $('#evidence-list').append(node); }
-function collectEvidence() { return $$('.evidence').map(row => Object.fromEntries($$('[name]', row).map(el => [el.name, el.value.trim()]))).filter(e => e.claim); }
-function renderResult(a) { const s = a.score; $('#result').hidden = false; $('#result').innerHTML = `<span class="status ${s.status}">${s.status.replace('-', ' ')}</span><h2>${escapeHtml(a.company)}</h2><div class="score">${s.total}<small> / ${s.max}</small></div><p><strong>Recommended next action:</strong> ${escapeHtml(a.nextAction)}</p><p><strong>Sales angle:</strong> ${escapeHtml(a.salesAngle)}</p><h3>Explainable score</h3><ul class="breakdown">${s.rows.map(r => `<li><strong>${r.points}/${r.max}</strong> — ${escapeHtml(r.reason)}</li>`).join('')}</ul>`; }
-function escapeHtml(value = '') { const div = document.createElement('div'); div.textContent = value; return div.innerHTML; }
-function renderAccounts() { const root = $('#account-list'); if (!accounts.length) { root.innerHTML = '<p class="empty">No saved accounts yet.</p>'; return; } root.innerHTML = accounts.slice().reverse().map(a => `<article class="account"><span class="status ${a.score.status}">${a.score.status.replace('-', ' ')}</span><h3>${escapeHtml(a.company)} · ${a.score.total}/100</h3><p>${escapeHtml(a.country)}${a.industry ? ` · ${escapeHtml(a.industry)}` : ''}</p><p><strong>Next:</strong> ${escapeHtml(a.nextAction)}</p>${a.website ? `<a href="${escapeHtml(a.website)}" target="_blank" rel="noreferrer">Website</a>` : ''}</article>`).join(''); }
-function searchQuery() { const parts = [icp.industries, icp.countries, icp.businessModels, icp.complexity].filter(Boolean).join(' '); window.open(`https://www.bing.com/search?q=${encodeURIComponent(parts || 'B2B company directory')}`, '_blank', 'noopener'); }
-function download() { const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), icp, accounts }, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob); const link = Object.assign(document.createElement('a'), { href: url, download: `bs23-sales-os-${new Date().toISOString().slice(0, 10)}.json` }); link.click(); URL.revokeObjectURL(url); }
-async function loadScoring() {
-  try {
-    const response = await fetch('../config/icp-scoring.json', { cache: 'no-store' });
-    const candidate = await response.json();
-    const total = candidate.criteria?.reduce((sum, criterion) => sum + criterion.max, 0);
-    if (!response.ok || total !== 100 || !candidate.thresholds || candidate.criteria.some(criterion => !criterion.id || !Number.isFinite(criterion.max))) throw new Error('Invalid scoring configuration');
-    scoring = candidate;
-    weights = Object.fromEntries(scoring.criteria.map(({ id, max }) => [id, max]));
-    renderIcp();
-  } catch {
-    // Opening index.html directly blocks fetch in some browsers; a verified fallback preserves tomorrow's no-setup workflow.
-  }
-}
-async function loadBs23StartingIcp() {
-  try {
-    const response = await fetch('../config/bs23-campaign-icp.json', { cache: 'no-store' });
-    if (!response.ok) throw new Error('Preset unavailable');
-    icp = await response.json();
-  } catch { icp = { ...bs23StartingIcp }; }
-  write(STORE.icp, icp);
-  renderIcp();
-  $('#icp-summary').textContent = 'BS23 campaign starting ICP loaded. Adjust it for today before saving or searching.';
-}
-$$('.tab').forEach(button => button.addEventListener('click', () => { $$('.tab,.view').forEach(el => el.classList.remove('active')); button.classList.add('active'); $(`#${button.dataset.view}`).classList.add('active'); }));
-$('#icp-form').addEventListener('submit', event => { event.preventDefault(); icp = Object.fromEntries(new FormData(event.currentTarget).entries()); write(STORE.icp, icp); renderIcp(); });
-$('#load-bs23-icp').addEventListener('click', loadBs23StartingIcp);
-$('#find-companies').addEventListener('click', searchQuery); $('#add-evidence').addEventListener('click', () => addEvidence());
-$('#account-form').addEventListener('submit', event => { event.preventDefault(); const account = Object.fromEntries(new FormData(event.currentTarget).entries()); account.id = crypto.randomUUID ? crypto.randomUUID() : String(Date.now()); account.evidence = collectEvidence(); account.score = scoreAccount(account); account.salesAngle = salesAngle(account); account.nextAction = recommendedAction(account, account.score); account.savedAt = new Date().toISOString(); accounts.push(account); write(STORE.accounts, accounts); renderResult(account); renderAccounts(); });
-$('#export-accounts').addEventListener('click', download); $('#clear-accounts').addEventListener('click', () => { if (confirm('Delete only this browser’s saved Sales OS data? Export first if you need a backup.')) { accounts = []; write(STORE.accounts, accounts); renderAccounts(); } });
-renderIcp(); addEvidence(); renderAccounts();
-loadScoring();
+function nextAction(a, s) { const facts = a.evidence.filter(e => e.classification === 'FACT' && e.url).length; if (!facts) return 'Add a source-backed fact before outreach or qualification.'; if (s.status === 'qualified' && a.painSignals) return 'Identify the Operations or Finance owner and prepare an evidence-led outreach angle.'; if (s.status === 'qualified') return 'Find one operational pain or trigger, then identify the likely Operations or Finance owner.'; if (s.status === 'review') return 'Research the missing ICP criteria. Do not treat a weak fit as qualified yet.'; return 'Archive for now unless a new source-backed trigger appears.'; }
+function addEvidence(v = {}) { const node = $('#evidence-template').content.firstElementChild.cloneNode(true); $$('[name]', node).forEach(el => { el.value = v[el.name] || el.value; }); $('.remove-evidence', node).addEventListener('click', () => node.remove()); $('#evidence-list').append(node); }
+function evidence() { return $$('.evidence').map(row => Object.fromEntries($$('[name]', row).map(el => [el.name, el.value.trim()]))).filter(e => e.claim); }
+function renderAccount(a) { const s = a.score; $('#result').hidden = false; $('#result').innerHTML = '<span class="status ' + s.status + '">' + s.status.replace('-', ' ') + '</span><h2>' + esc(a.company) + '</h2><div class="score">' + s.total + '<small> / 100</small></div><p><strong>Recommended next action:</strong> ' + esc(a.nextAction) + '</p><h3>Explainable score</h3><ul class="breakdown">' + s.rows.map(r => '<li><strong>' + r.points + '/' + r.max + '</strong> ' + esc(r.reason) + '</li>').join('') + '</ul>'; }
+function renderAccounts() { const root = $('#account-list'); if (!accounts.length) { root.innerHTML = '<p class="empty">No saved accounts yet.</p>'; return; } root.innerHTML = accounts.slice().reverse().map(a => '<article class="account"><span class="status ' + a.score.status + '">' + a.score.status.replace('-', ' ') + '</span><h3>' + esc(a.company) + ' · ' + a.score.total + '/100</h3><p>' + esc(a.country) + (a.industry ? ' · ' + esc(a.industry) : '') + '</p><p><strong>Next:</strong> ' + esc(a.nextAction) + '</p></article>').join(''); }
+function view(name) { $$('.tab,.view').forEach(el => el.classList.remove('active')); $('.tab[data-view="' + name + '"]')?.classList.add('active'); $('#' + name)?.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+function lines(v) { return v.split('\n').map(x => x.trim()).filter(Boolean); }
+function list(title, items) { return '<h3>' + esc(title) + '</h3>' + (items.length ? '<ul class="breakdown">' + items.map(item => '<li>' + esc(item) + '</li>').join('') + '</ul>' : '<p class="muted">None detected.</p>'); }
+function meeting(raw) { const g = { pains: [], requirements: [], stakeholders: [], actions: [], systems: [] }; lines(raw).forEach(line => { const x = line.toLowerCase(); if (/pain|problem|issue|bottleneck|friction|struggle/.test(x)) g.pains.push(line); if (/need|want|require|module|feature/.test(x)) g.requirements.push(line); if (/cfo|ceo|cto|manager|director|head|champion|lead/.test(x)) g.stakeholders.push(line); if (/action|next|follow up|todo|send|schedule/.test(x)) g.actions.push(line); if (/sap|odoo|oracle|dynamics|excel|zoho|sage/.test(x)) g.systems.push(line); }); const u = []; if (!g.stakeholders.length) u.push('Decision maker or budget authority'); if (!g.pains.length) u.push('Specific operational pain point'); if (!g.systems.length) u.push('Current ERP or accounting software'); if (!g.actions.length) u.push('Agreed next step or follow-up date'); return { g, u }; }
+function deal(a) { const checks = [['pain', 'Specific operational pain', 20], ['champion', 'Internal champion', 15], ['decisionMaker', 'Economic buyer', 25], ['closeTarget', 'Target go-live date', 15], ['currentSystem', 'Current ERP or system', 10], ['budgetRange', 'Budget range', 15]]; let total = 100; const unknown = []; checks.forEach(c => { if (!a[c[0]]) { total -= c[2]; unknown.push(c[1]); } }); let action = 'Deliver a tailored Odoo solution proposal using only approved proof.'; if (unknown.includes('Economic buyer')) action = 'Confirm the decision process and schedule a briefing with the economic buyer before drafting a proposal.'; else if (unknown.includes('Specific operational pain')) action = 'Conduct workflow discovery focused on daily operational friction.'; else if (unknown.includes('Target go-live date')) action = 'Ask what happens if the system is not live by the target quarter.'; return { total: Math.max(0, total), unknown, action }; }
+function activity(note) { const duration = note.match(/(\d+)\s*(?:min|minute|mins|m|hour|hr|hours)\b/i); const type = /linkedin|inmail/i.test(note) ? 'LinkedIn' : /email|emailed|sent email/i.test(note) ? 'Email' : /demo/i.test(note) ? 'Demo' : /call|called|phone/i.test(note) ? 'Call' : 'Meeting'; return { type, duration: duration ? Number(duration[1]) * (/hour|hr/i.test(duration[0]) ? 60 : 1) : null }; }
+function service() { return { url: localStorage.getItem(STORE.serviceUrl) || '', token: sessionStorage.getItem(TOKEN) || '' }; }
+function ready() { const s = service(); return Boolean(s.url && s.token); }
+function renderService() { const on = ready(), state = $('#service-state'); state.textContent = on ? 'connected' : 'not connected'; state.className = 'status ' + (on ? 'qualified' : 'review'); $('#service-form').elements.url.value = service().url; }
+async function call(path, body) { const s = service(); if (!ready()) throw new Error('Secure service is not connected. Browser-mode agent remains available.'); const response = await fetch(s.url.replace(/\/$/, '') + path, { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + s.token }, body: JSON.stringify(body) }); const result = await response.json().catch(() => ({})); if (!response.ok) throw new Error(result.error || 'Service request failed.'); return result; }
+function download() { const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), accounts }, null, 2)], { type: 'application/json' }); const url = URL.createObjectURL(blob), link = Object.assign(document.createElement('a'), { href: url, download: 'bs23-sales-os-' + new Date().toISOString().slice(0, 10) + '.json' }); link.click(); URL.revokeObjectURL(url); }
+async function loadPublicConfig() { try { const responses = await Promise.all([fetch('../config/bs23-campaign-icp.json', { cache: 'no-store' }), fetch('../config/icp-scoring.json', { cache: 'no-store' })]); if (responses[0].ok) icp = await responses[0].json(); if (responses[1].ok) { const config = await responses[1].json(); config.criteria.forEach(item => { if (Object.hasOwn(criteria, item.id)) criteria[item.id] = item.max; }); } } catch { /* Defaults support direct local opening. */ } }
+
+$$('.tab').forEach(b => b.addEventListener('click', () => view(b.dataset.view)));
+$$('.agent-card').forEach(b => b.addEventListener('click', () => { view(b.dataset.agentView); if (b.dataset.focus) setTimeout(() => $('#communication-card').scrollIntoView({ behavior: 'smooth' }), 100); }));
+$('#route-form').addEventListener('submit', e => { e.preventDefault(); const request = e.currentTarget.request.value.trim().toLowerCase(); if (!request) return; const route = routes.find(r => r[2].some(t => request.includes(t))) || routes[4]; $('#route-result').innerHTML = '<strong>' + esc(route[0].replaceAll('_', ' ')) + '</strong> is the best starting point. Opened the relevant workflow.'; view(route[1]); });
+$('#add-evidence').addEventListener('click', () => addEvidence());
+$('#account-form').addEventListener('submit', e => { e.preventDefault(); const a = Object.fromEntries(new FormData(e.currentTarget).entries()); a.evidence = evidence(); a.score = score(a); a.nextAction = nextAction(a, a.score); a.savedAt = new Date().toISOString(); accounts.push(a); latestAccount = a; write(STORE.accounts, accounts); renderAccount(a); renderAccounts(); });
+$('#build-communication').addEventListener('click', async () => { const root = $('#communication-result'); if (!latestAccount) { root.textContent = 'Score and save the account first so communication uses evidence, not assumptions.'; return; } const facts = latestAccount.evidence.filter(e => e.classification === 'FACT' && e.url); if (!facts.length) { root.textContent = 'Add at least one URL-backed FACT before preparing outreach.'; return; } try { if (ready()) { const result = await call('/v1/communication', { company: latestAccount.company, industry: latestAccount.industry, problem: latestAccount.painSignals, facts }); root.innerHTML = '<strong>Secure communication agent</strong><p>' + esc(result.draft || result.message || 'Draft prepared.') + '</p>'; } else root.innerHTML = '<strong>Evidence-led outreach brief</strong><p>For ' + esc(latestAccount.company) + ': open with this verified observation, ' + esc(facts[0].claim) + '. Ask one question about ' + esc(latestAccount.painSignals || latestAccount.operationalComplexity || 'their current workflow') + '. Do not claim an outcome that is not in approved proof.</p><p class="muted">Connect the secure service to generate a reviewed copy draft using protected BS23 knowledge.</p>'; } catch (error) { root.textContent = error.message; } });
+$('#deal-form').addEventListener('submit', e => { e.preventDefault(); const r = deal(Object.fromEntries(new FormData(e.currentTarget).entries())); const root = $('#deal-result'); root.hidden = false; root.innerHTML = '<h2>Deal health <span class="score">' + r.total + '/100</span></h2><p><strong>Next best action:</strong> ' + esc(r.action) + '</p>' + list('Critical unknowns', r.unknown); });
+$('#meeting-form').addEventListener('submit', e => { e.preventDefault(); const r = meeting(e.currentTarget.notes.value), root = $('#meeting-result'); root.hidden = false; root.innerHTML = list('Pains', r.g.pains) + list('Requirements', r.g.requirements) + list('Stakeholders', r.g.stakeholders) + list('Agreed next actions', r.g.actions) + list('Critical unknowns', r.u); });
+$('#daily-form').addEventListener('submit', e => { e.preventDefault(); const d = new FormData(e.currentTarget), items = lines(d.get('overdue')).map(x => 'P0 overdue: ' + x).concat(lines(d.get('meetings')).map(x => 'P1 meeting: ' + x), lines(d.get('tasks')).map(x => 'P2 task: ' + x)); if (items.length < 5) items.push('P3 pipeline: research 3 to 5 ICP accounts or progress active discovery.'); const root = $('#daily-result'); root.hidden = false; root.innerHTML = list('Today’s priority plan', items); });
+$('#activity-form').addEventListener('submit', e => { e.preventDefault(); const a = activity(e.currentTarget.activity.value.trim()); $('#activity-result').innerHTML = '<strong>Captured locally:</strong> ' + a.type + (a.duration ? ', ' + a.duration + ' minutes' : '') + '. Export or connect the secure service when ready to sync.'; e.currentTarget.reset(); });
+$('#service-form').addEventListener('submit', async e => { e.preventDefault(); const f = new FormData(e.currentTarget), url = String(f.get('url') || '').replace(/\/$/, ''), token = String(f.get('token') || ''), root = $('#service-result'); if (!url || !token) { root.textContent = 'Enter both the private service URL and its access token.'; return; } try { const response = await fetch(url + '/health', { headers: { Authorization: 'Bearer ' + token } }); if (!response.ok) throw new Error('The service did not accept this connection.'); localStorage.setItem(STORE.serviceUrl, url); sessionStorage.setItem(TOKEN, token); renderService(); root.textContent = 'Secure agent service connected for this browser session.'; } catch (error) { root.textContent = error.message; } });
+$('#disconnect-service').addEventListener('click', () => { localStorage.removeItem(STORE.serviceUrl); sessionStorage.removeItem(TOKEN); $('#service-result').textContent = 'Secure service disconnected from this browser.'; renderService(); });
+$('#export-accounts').addEventListener('click', download);
+$('#clear-accounts').addEventListener('click', () => { if (confirm('Delete only this browser’s saved Sales OS data? Export first if needed.')) { accounts = []; latestAccount = null; write(STORE.accounts, accounts); renderAccounts(); } });
+addEvidence(); renderAccounts(); renderService();
+loadPublicConfig();

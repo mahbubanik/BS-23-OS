@@ -4,50 +4,36 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#103c37" />
-    <title>BS23 Sales OS — ICP MVP</title>
+    <title>BS23 Sales OS</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="shell">
-      <header><p class="eyebrow">BRAIN STATION 23 · SALES OS</p><h1>ICP Research</h1><p>Evidence first. Score second. No guesswork presented as fact.</p></header>
-      <nav aria-label="MVP sections"><button class="tab active" data-view="icp">1 · ICP</button><button class="tab" data-view="research">2 · Research</button><button class="tab" data-view="accounts">3 · Accounts</button></nav>
-
-      <section id="icp" class="view active">
-        <div class="card"><h2>Define today’s ICP</h2><p class="muted">Blank fields mean “not a scoring requirement.” Use comma-separated values where relevant.</p>
-          <form id="icp-form" class="form-grid">
-            <label>Countries / regions<input name="countries" placeholder="e.g., UK, Germany, UAE" /></label>
-            <label>Industries<input name="industries" placeholder="e.g., wholesale, distribution" /></label>
-            <label>Employee range<select name="employeeRange"><option value="">Any size</option><option>11–50</option><option>51–200</option><option>201–1000</option><option>1000+</option></select></label>
-            <label>Business models<input name="businessModels" placeholder="e.g., B2B wholesale, manufacturer" /></label>
-            <label>Operational complexity<input name="complexity" placeholder="e.g., multi-warehouse, import/export" /></label>
-            <label>Priority pains<input name="painSignals" placeholder="e.g., fragmented ERP, stock mismatch" /></label>
-            <label>Technology / ERP clues<input name="technology" placeholder="e.g., legacy ERP, spreadsheets" /></label>
-            <label>Expansion triggers<input name="expansionSignals" placeholder="e.g., new market, e-commerce launch" /></label>
-            <button type="submit" class="primary">Save ICP</button><button type="button" id="load-bs23-icp" class="secondary">Use BS23 starting ICP</button><button type="button" id="find-companies" class="secondary">Find companies</button>
-          </form>
+      <header>
+        <p class="eyebrow">BRAIN STATION 23 · SALES OS</p>
+        <h1>Your sales desk</h1>
+        <p>Evidence-led account, meeting, deal, communication, and daily-work support.</p>
+      </header>
+      <nav aria-label="Sales OS sections">
+        <button class="tab active" data-view="desk">Desk</button><button class="tab" data-view="research">Research</button><button class="tab" data-view="deal">Deal</button><button class="tab" data-view="meeting">Meeting</button><button class="tab" data-view="daily">Today</button><button class="tab" data-view="accounts">Accounts</button>
+      </nav>
+      <section id="desk" class="view active">
+        <div class="card hero-card"><p class="eyebrow">ONE CONNECTED WORKSPACE</p><h2>Start with what you need to do</h2><form id="route-form" class="route-form"><label class="sr-only" for="sales-request">What do you need help with?</label><input id="sales-request" name="request" autocomplete="off" placeholder="e.g. Prepare for a meeting with Capax Group" /><button type="submit" class="primary">Choose agent</button></form><div id="route-result" class="notice" aria-live="polite"></div></div>
+        <div class="agent-grid" aria-label="Sales OS agents">
+          <button class="agent-card" data-agent-view="research"><span>01</span><strong>Account intelligence</strong><small>Research, evidence, and qualification</small></button><button class="agent-card" data-agent-view="meeting"><span>02</span><strong>Meeting copilot</strong><small>Capture notes and expose gaps</small></button><button class="agent-card" data-agent-view="deal"><span>03</span><strong>Deal strategist</strong><small>Health, risk, and next action</small></button><button class="agent-card" data-agent-view="daily"><span>04</span><strong>Daily operator</strong><small>Priorities and activity capture</small></button><button class="agent-card" data-agent-view="research" data-focus="communication"><span>05</span><strong>Communication</strong><small>Evidence-led outreach brief</small></button><button class="agent-card" data-agent-view="accounts"><span>06</span><strong>Pipeline memory</strong><small>Saved browser-local research</small></button>
         </div>
-        <div id="icp-summary" class="notice" aria-live="polite"></div>
+        <details class="connection card"><summary>Secure agent service <span id="service-state" class="status review">not connected</span></summary><p class="muted">The desk works in browser mode for deterministic tasks. Connect the private service to use protected cloud actions without exposing Gemini or Notion credentials in this site.</p><form id="service-form" class="form-grid compact"><label class="full">Service URL<input name="url" type="url" placeholder="https://your-sales-os-api.workers.dev" /></label><label class="full">Access token<input name="token" type="password" autocomplete="off" placeholder="Kept only for this browser session" /></label><button type="submit" class="secondary">Connect</button><button type="button" id="disconnect-service" class="secondary">Disconnect</button></form><div id="service-result" class="notice" aria-live="polite"></div></details>
       </section>
-
       <section id="research" class="view">
-        <div class="card"><h2>Research an account</h2><p class="muted">Enter claims from public sources. A claim with no URL stays an inference, not a fact.</p>
-          <form id="account-form" class="form-grid">
-            <label>Company *<input required name="company" placeholder="Company name" /></label><label>Website<input type="url" name="website" placeholder="https://" /></label>
-            <label>Country / region *<input required name="country" /></label><label>Industry<input name="industry" /></label>
-            <label>Employee estimate<input name="employeeEstimate" placeholder="e.g., 51–200" /></label><label>Business model<input name="businessModel" placeholder="e.g., B2B wholesaler" /></label>
-            <label>ERP / software status<input name="erpStatus" placeholder="Known, suspected, or unknown" /></label><label>Operational complexity<input name="operationalComplexity" placeholder="Specific operational clues" /></label>
-            <label>Verified pain signals<textarea name="painSignals" placeholder="What source-supported friction or gap exists?"></textarea></label><label>Technology clues<textarea name="technology" placeholder="ERP, warehouse, e-commerce, marketplace clues"></textarea></label>
-            <label>Expansion / trigger events<textarea name="expansionSignals" placeholder="Dated, public changes only"></textarea></label><label>Research notes<textarea name="notes" placeholder="Keep facts separate from hypotheses"></textarea></label>
-            <div class="full"><h3>Evidence ledger</h3><div id="evidence-list"></div><button type="button" id="add-evidence" class="secondary small">+ Add evidence</button></div>
-            <button type="submit" class="primary">Score & save</button><button type="reset" class="secondary">Clear</button>
-          </form>
-        </div>
-        <article id="result" class="card result" hidden aria-live="polite"></article>
+        <div class="card"><h2>Research and qualify an account</h2><p class="muted">Record public evidence. FACT requires a source URL. Scoring is explainable, not AI guessed.</p><form id="account-form" class="form-grid"><label>Company *<input required name="company" placeholder="Company name" /></label><label>Website<input type="url" name="website" placeholder="https://" /></label><label>Country / region *<input required name="country" /></label><label>Industry<input name="industry" /></label><label>Employee estimate<input name="employeeEstimate" placeholder="e.g. 51-200" /></label><label>Business model<input name="businessModel" placeholder="e.g. B2B wholesaler" /></label><label>ERP / software status<input name="erpStatus" placeholder="Known, suspected, or unknown" /></label><label>Operational complexity<input name="operationalComplexity" placeholder="Specific operational clues" /></label><label>Verified pain signals<textarea name="painSignals" placeholder="What source-supported friction or gap exists?"></textarea></label><label>Technology clues<textarea name="technology" placeholder="ERP, warehouse, e-commerce, marketplace clues"></textarea></label><label>Expansion / trigger events<textarea name="expansionSignals" placeholder="Dated, public changes only"></textarea></label><label>Research notes<textarea name="notes" placeholder="Keep facts separate from hypotheses"></textarea></label><div class="full"><h3>Evidence ledger</h3><div id="evidence-list"></div><button type="button" id="add-evidence" class="secondary small">+ Add evidence</button></div><button type="submit" class="primary">Score and save</button><button type="reset" class="secondary">Clear</button></form></div>
+        <article id="result" class="card result" hidden aria-live="polite"></article><div class="card" id="communication-card"><h2>Communication brief</h2><p class="muted">Generate only after you have source-backed facts. The secure service can turn this brief into a draft without putting internal knowledge in GitHub Pages.</p><button id="build-communication" class="secondary">Build safe outreach brief</button><div id="communication-result" class="notice" aria-live="polite"></div></div>
       </section>
-
-      <section id="accounts" class="view"><div class="card"><div class="split"><div><h2>Saved accounts</h2><p class="muted">Saved only in this browser until exported.</p></div><div><button id="export-accounts" class="secondary small">Export accounts</button><button id="clear-accounts" class="danger small">Clear local data</button></div></div><div id="account-list"></div></div></section>
+      <section id="deal" class="view"><div class="card"><h2>Deal strategist</h2><p class="muted">Identify the gaps that stall deals before you create a proposal.</p><form id="deal-form" class="form-grid"><label>Opportunity name *<input required name="name" /></label><label>Stage<input name="stage" placeholder="Discovery" /></label><label>Confirmed pain<textarea name="pain"></textarea></label><label>Internal champion<input name="champion" /></label><label>Decision maker<input name="decisionMaker" /></label><label>Target close or go-live<input name="closeTarget" /></label><label>Current ERP / system<input name="currentSystem" /></label><label>Budget range<input name="budgetRange" /></label><button class="primary">Evaluate deal</button></form></div><article id="deal-result" class="card result" hidden aria-live="polite"></article></section>
+      <section id="meeting" class="view"><div class="card"><h2>Meeting copilot</h2><p class="muted">Paste only notes you are permitted to process. This browser-mode analysis stays on this device.</p><form id="meeting-form"><label>Meeting notes *<textarea required name="notes" placeholder="Paste bullets, notes, or a transcript excerpt"></textarea></label><button class="primary">Analyze notes</button></form></div><article id="meeting-result" class="card result" hidden aria-live="polite"></article></section>
+      <section id="daily" class="view"><div class="card"><h2>Daily operator</h2><p class="muted">One item per line. Use overdue follow-ups, today's meetings, and today's tasks to create a realistic plan.</p><form id="daily-form" class="form-grid"><label>Overdue follow-ups<textarea name="overdue" placeholder="AromaWest: confirm discovery date"></textarea></label><label>Today's meetings<textarea name="meetings" placeholder="Capax Group: 14:00"></textarea></label><label class="full">Today's tasks<textarea name="tasks" placeholder="Review wholesale research queue"></textarea></label><button class="primary">Build today's plan</button></form></div><article id="daily-result" class="card result" hidden aria-live="polite"></article><div class="card"><h2>Capture activity</h2><form id="activity-form" class="inline-form"><input required name="activity" placeholder="e.g. Called Capax Group for 15 min" /><button class="secondary">Capture</button></form><div id="activity-result" class="notice" aria-live="polite"></div></div></section>
+      <section id="accounts" class="view"><div class="card"><div class="split"><div><h2>Saved accounts</h2><p class="muted">Saved in this browser. Export before changing devices.</p></div><div><button id="export-accounts" class="secondary small">Export</button><button id="clear-accounts" class="danger small">Clear local data</button></div></div><div id="account-list"></div></div></section>
     </main>
-    <template id="evidence-template"><fieldset class="evidence"><label>Type<select name="classification"><option>FACT</option><option>INFERENCE</option><option>UNKNOWN</option></select></label><label>Claim<input name="claim" placeholder="A specific, concise statement" /></label><label>Source URL<input name="url" type="url" placeholder="https://" /></label><label>Source name<input name="sourceName" placeholder="Company site, annual report…" /></label><label>Confidence<select name="confidence"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></label><button type="button" class="remove-evidence danger small">Remove</button></fieldset></template>
+    <template id="evidence-template"><fieldset class="evidence"><label>Type<select name="classification"><option>FACT</option><option>INFERENCE</option><option>UNKNOWN</option></select></label><label>Claim<input name="claim" placeholder="A specific, concise statement" /></label><label>Source URL<input name="url" type="url" placeholder="https://" /></label><label>Source name<input name="sourceName" placeholder="Company site, annual report" /></label><label>Confidence<select name="confidence"><option value="high">High</option><option value="medium" selected>Medium</option><option value="low">Low</option></select></label><button type="button" class="remove-evidence danger small">Remove</button></fieldset></template>
     <script src="app.js"></script>
   </body>
 </html>

@@ -1,0 +1,10 @@
+name = "bs23-sales-os-api"
+main = "worker.mjs"
+compatibility_date = "2026-09-07"
+
+[vars]
+ALLOWED_ORIGIN = "https://mahbubanik.github.io"
+GEMINI_MODEL = "gemini-3.6-flash"
+
+[secrets]
+required = ["SALES_OS_ACCESS_TOKEN", "GEMINI_API_KEY"]
