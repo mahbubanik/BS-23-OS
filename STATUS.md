@@ -1,30 +1,33 @@
 # Status
 
 ## DONE
-- Architecture and minimum data contracts.
-- Configurable, deterministic ICP scorer.
-- Phone-first, no-credential ICP research MVP: ICP definition, search handoff, evidence capture, scoring, local save, JSON export.
-- Official integration validation and test fixtures.
-- Private Notion Accounts and Research Evidence databases, bidirectional relation, local secret configuration, and live read-only verification.
+- Architecture, evidence model (FACT / INFERENCE / UNKNOWN), and deterministic ICP scorer.
+- 30 BS23 Odoo client files extracted from vault notes into `config/bs23-erp-knowledge.json` with industry mapping, SAP migration patterns, and VAT engines.
+- BS23 corporate identity, credibility stack (with caveats), 8 SBUs, commercial models, and voice rules structured into `config/bs23-company-knowledge.json`.
+- 37 Knowledge records seeded into Notion Knowledge and Odoo Knowledge databases.
+- 4 evidence-grounded ICP definitions seeded into Notion ICP Definitions database.
+- First qualified account (AromaWest MB, score 80) synced to Notion Accounts with 3 verified facts in Research Evidence.
+- First active deal created in Notion Opportunities (AromaWest MB Odoo Wholesale ERP).
+- Grounded communication draft builder (`tools/build-communication-draft.mjs`) with Gemini API generation (`--gemini`).
+- On-demand company research engine (`tools/research-company.mjs`).
+- Personal segment GTM builder (`tools/build-segment-gtm.mjs`).
+- Personal 6-Month GTM Plan & Sector Playbooks authored and stored in `Vaults\BrainStation23-Vault\50-deliverables\BDO-6-Month-GTM-Strategy-2026-09\BDO-6-Month-GTM-Plan.md`.
+- Post-meeting analyzer (`tools/analyze-meeting-notes.mjs`) with LLM extraction (`--llm`).
+- Deal evaluator and Next Best Action recommender (`tools/evaluate-deal.mjs`).
+- Daily Operator (`tools/daily-operator.mjs`) with morning planning, activity capture, and EOD summary.
+- Gemini API adapter (`integrations/gemini-client.mjs`) using `gemini-3.6-flash`.
+- Security hardening: `dist/` build excludes internal knowledge files.
+- GitHub Pages automation in `.github/workflows/deploy-pages.yml` with `enablement: true`.
+- 39 automated unit tests passing across 17 test suites (`node --test tests/*.test.mjs`).
 
 ## IN PROGRESS
-- 30 BS23 Odoo client files structured from vault notes into config/bs23-erp-knowledge.json with industry mapping and complexity patterns.
-- BS23 company identity, credibility stack, SBUs, engagement models, and voice guide structured into config/bs23-company-knowledge.json.
-- Notion knowledge seeder implemented in integrations/seed-bs23-knowledge.mjs.
-- Grounded communication draft builder implemented in tools/build-communication-draft.mjs.
-- On-demand company research tool implemented in tools/research-company.mjs.
-- Personal segment GTM builder implemented in tools/build-segment-gtm.mjs.
-- Gemini API intelligence adapter implemented in integrations/gemini-client.mjs.
-- Post-meeting notes analyzer implemented in tools/analyze-meeting-notes.mjs.
-- Deal evaluator and Next Best Action recommender implemented in tools/evaluate-deal.mjs.
-- Daily Operator (morning plan, activity capture, EOD summary) implemented in tools/daily-operator.mjs.
-- 37 automated tests passing across 16 test suites.
+- GitHub Pages online activation via repository settings toggle.
+- Prospect research on next high-priority distribution accounts (Adriatic Beauty, Balkan Luxury Supply, Capax Group).
 
 ## NEXT
-- Export one qualified public-research account and run the server-side sync adapter from a trusted environment.
-- Build the approval-gated Outlook meeting-prep handoff: choose event, choose Account/Opportunity, prepare a draft, then write only confirmed facts/tasks to Notion.
-- Export one qualified public-research account and run the server-side sync adapter from a trusted environment.
-- Add a legitimate search API only if manual search becomes the bottleneck.
+- Qualify and sync next research batch into Notion Accounts and Evidence.
+- Generate and deploy Month 1 wholesale distribution outreach sequences using `tools/build-communication-draft.mjs --gemini`.
+- Connect Outlook meeting schedule to `tools/prepare-meeting-context.mjs` for live meeting preparation.
 
 ## BLOCKED
-- No blocker for Outlook Calendar preparation through the connected Microsoft 365 integration. Standalone hosted Graph automation will require Entra application credentials only if the connector is not used.
+- None.
